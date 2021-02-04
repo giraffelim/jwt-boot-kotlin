@@ -56,7 +56,7 @@
                 success: function (data, textStatus, jqXhr) {
                     if (jqXhr.status == 200) {
                         alert('Authorization: ' + data);
-                        localStorage.setItem('authorization', data);
+                        localStorage.setItem('Authorization', data);
                         location.href="/"
                     }
                 }
