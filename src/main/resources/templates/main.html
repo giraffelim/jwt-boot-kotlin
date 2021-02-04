@@ -10,26 +10,27 @@
     <title>Main View</title>
 </head>
 <body>
-    <h2>HELLO WORLD</h2>
-    <a href="/userSignUp">Sign View</a> <br>
-    <a href="#" id="getUserList">Get UserList</a>
+<h2>HELLO WORLD</h2>
+<a href="/userSignUp">Sign View</a> <br>
+<a href="#" id="getUserList">Get UserList</a>
 </body>
 <script>
     $(document).ready(function () {
         $("#getUserList").click(function (e) {
-             e.preventDefault();
-             $.ajax({
-                 url: "/api/v1/getUserList",
-                 type: "GET",
-                 beforeSend: function (xhr) {
-                    xhr.setRequestHeader("Authorization", localStorage.getItem("Authorization"))
-                 },
-                 success: function (data, textStatus, jqXHR) {
-                     if(jqXHR.status === 200) {
-                         console.log(data);
-                     }
-                 }
-             })
+            e.preventDefault();
+            $.ajax({
+                url: "/api/v1/getUserList",
+                type: "GET",
+                beforeSend: function (xhr) {
+                    let jwtToken = "Bearer " + localStorage.getItem("Authorization");
+                    xhr.setRequestHeader("Authorization", jwtToken);
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status === 200) {
+                        console.log(data);
+                    }
+                }
+            })
         });
     });
 </script>
