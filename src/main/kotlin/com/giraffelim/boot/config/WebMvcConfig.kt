@@ -15,6 +15,7 @@ class WebMvcConfig : WebMvcConfigurer {
     override fun addViewControllers(registry: ViewControllerRegistry) {
         registry.addViewController("/").setViewName("main")
         registry.addViewController("/userSignUp").setViewName("userSignView")
+        registry.addViewController("/login").setViewName("login")
     }
 
     override fun addInterceptors(registry: InterceptorRegistry) {

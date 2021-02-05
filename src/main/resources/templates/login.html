@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="/fragments/header.html :: fragment-header"></div>
+</head>
+<body>
+    <div class="container">
+        <h2>로그인</h2>
+        <div class="form-group">
+            <label for="email">이메일</label>
+            <input type="text" id="email" class="form-control" placeholder="이메일을 입력해주세요.">
+        </div>
+        <div class="form-group">
+            <label for="pw">비밀번호</label>
+            <input type="password" id="pw" class="form-control" placeholder="비밀번호를 입력해주세요.">
+        </div>
+        <button type="button" class="btn btn-primary" id="submitBtn">로그인</button>
+        <button type="button" class="btn btn-success" id="mainBtn" onclick="location.href='/'">메인</button>
+    </div>
+</body>
+<script>
+    $(document).ready(function () {
+        $("#submitBtn").click(function () {
+
+        });
+    });
+</script>
+</html>
