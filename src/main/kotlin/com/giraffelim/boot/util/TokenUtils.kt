@@ -1,8 +1,12 @@
 package com.giraffelim.boot.util
 
 import com.giraffelim.boot.domain.User
+import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import org.slf4j.LoggerFactory
+import java.lang.NullPointerException
 import java.security.Key
 import java.util.*
 import javax.crypto.spec.SecretKeySpec
@@ -17,6 +21,8 @@ class TokenUtils {
 
     companion object {
 
+        private val logger = LoggerFactory.getLogger(this.javaClass)
+
         private const val secretKey = "JWT-SECRET-KEY"
 
         fun generateJwtToken(user: User): String {
@@ -27,6 +33,28 @@ class TokenUtils {
                 .setExpiration(createExpireDate())
                 .signWith(SignatureAlgorithm.HS256, createSigningKey())
                 .compact()
+        }
+
+        /**
+         *  토큰 검증
+         */
+        fun isValidToken(token: String): Boolean {
+            try {
+                val claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(secretKey)).parseClaimsJws(token).body
+                logger.info("expire Time: ${claims.expiration}")
+                logger.info("email: ${claims["email"]}")
+                logger.info("role: ${claims["role"]}")
+                return true
+            } catch (e: ExpiredJwtException) {
+                logger.error("Token Expired")
+                return false
+            } catch (e: JwtException) {
+                logger.error("Token Tampered")
+                return false
+            } catch (e: NullPointerException) {
+                logger.error("Token is NULL")
+                return false;
+            }
         }
 
         /**
@@ -63,6 +91,13 @@ class TokenUtils {
          */
         private fun createSigningKey(): Key {
             return SecretKeySpec(DatatypeConverter.parseBase64Binary(secretKey), SignatureAlgorithm.HS256.jcaName)
+        }
+
+        /**
+         *  토큰 추출
+         */
+        fun getTokenFromHeader(header: String): String {
+            return header.split(" ")[1]
         }
 
     }

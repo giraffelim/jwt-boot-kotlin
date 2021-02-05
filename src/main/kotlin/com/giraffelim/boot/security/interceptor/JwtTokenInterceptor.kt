@@ -1,6 +1,7 @@
 package com.giraffelim.boot.security.interceptor
 
 import com.giraffelim.boot.constant.AuthConstants
+import com.giraffelim.boot.util.TokenUtils
 import org.springframework.web.servlet.HandlerInterceptor
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -12,7 +13,8 @@ class JwtTokenInterceptor: HandlerInterceptor {
         val header = request.getHeader(AuthConstants.AUTH_HEADER)
 
         header?.let {
-            return true
+            val tokenFromHeader = TokenUtils.getTokenFromHeader(header)
+            return TokenUtils.isValidToken(tokenFromHeader)
         }
 
         response.sendRedirect("/error/unauthorized")

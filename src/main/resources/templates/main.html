@@ -22,15 +22,23 @@
                 url: "/api/v1/getUserList",
                 type: "GET",
                 beforeSend: function (xhr) {
-                    let jwtToken = "Bearer " + localStorage.getItem("Authorization");
-                    xhr.setRequestHeader("Authorization", jwtToken);
+                    const storageItem = localStorage.getItem("Authorization");
+                    if(storageItem != null) {
+                        let jwtToken = "Bearer " + storageItem;
+                        xhr.setRequestHeader("Authorization", jwtToken);
+                    }
                 },
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status === 200) {
                         console.log(data);
                     }
+                },
+                error: function (jqXHR) {
+                    if (jqXHR.status === 401) {
+                        alert(jqXHR.responseText);
+                    }
                 }
-            })
+            });
         });
     });
 </script>
