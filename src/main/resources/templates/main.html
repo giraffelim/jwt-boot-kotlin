@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <head>
     <div th:replace="/fragments/header.html :: fragment-header"></div>
 </head>
@@ -7,7 +8,8 @@
 <h2>jwt-boot</h2>
 <a href="/login">Login View</a> <br>
 <a href="/userSignUp">Sign View</a> <br>
-<a href="#" id="getUserList">Get UserList</a>
+<a href="#" id="getUserList">Get UserList(local Storage)</a>
+<a href="#" id="getUserListCookie">Get UserList(Cookie)</a>
 </body>
 <script>
     $(document).ready(function () {
@@ -18,11 +20,33 @@
                 type: "GET",
                 beforeSend: function (xhr) {
                     const storageItem = localStorage.getItem("Authorization");
-                    if(storageItem != null) {
+                    if (storageItem != null) {
                         let jwtToken = "Bearer " + storageItem;
                         xhr.setRequestHeader("Authorization", jwtToken);
+                    } else {
+                        alert("UNAUTHORIZED!");
+                        return false;
                     }
                 },
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status === 200) {
+                        console.log(data);
+                    }
+                },
+                error: function (jqXHR) {
+                    if (jqXHR.status === 401) {
+                        alert(jqXHR.responseText);
+                    }
+                }
+            });
+        });
+
+        $("#getUserListCookie").click(function (e) {
+            e.preventDefault();
+            localStorage.clear();
+            $.ajax({
+                url: "/api/v1/getUserList",
+                type: "GET",
                 success: function (data, textStatus, jqXHR) {
                     if (jqXHR.status === 200) {
                         console.log(data);

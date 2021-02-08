@@ -23,13 +23,13 @@
 
         $("#submitBtn").click(function () {
 
-            if($("#email").val().length == 0) {
+            if ($("#email").val().length == 0) {
                 alert("이메일은 필수값입니다.")
                 $("#email").focus();
                 return
             }
 
-            if($("#pw").val().length == 0) {
+            if ($("#pw").val().length == 0) {
                 alert("비밀번호는 필수값입니다.")
                 $("#pw").focus();
                 return
@@ -38,20 +38,20 @@
             let param = {
                 email: $("#email").val(),
                 pw: $("#pw").val()
-            }
+            };
 
             $.ajax({
                 url: "/user/login",
                 type: "POST",
-                dataType: "application/json; charset=utf-8",
+                contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(param),
                 success: function (data, textStatus, jqXHR) {
-                    if(jqXHR.status === 200) {
+                    if (jqXHR.status === 200) {
                         location.href = "/";
                     }
                 },
                 error: function (jqXHR) {
-                    if(jqXHR.status === 500) {
+                    if (jqXHR.status === 500) {
                         alert(jqXHR.responseText);
                         $("#email").val("");
                         $("#pw").val("");
