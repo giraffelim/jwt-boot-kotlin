@@ -1,6 +1,7 @@
 package com.giraffelim.boot.exception
 
-import java.lang.RuntimeException
+import org.springframework.security.core.AuthenticationException
 
-class UserNotFoundException(str: String): RuntimeException(str) {
+
+class UserNotFoundException(str: String): AuthenticationException(str) {
 }

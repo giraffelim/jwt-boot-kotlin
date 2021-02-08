@@ -4,24 +4,60 @@
     <div th:replace="/fragments/header.html :: fragment-header"></div>
 </head>
 <body>
-    <div class="container">
-        <h2>로그인</h2>
-        <div class="form-group">
-            <label for="email">이메일</label>
-            <input type="text" id="email" class="form-control" placeholder="이메일을 입력해주세요.">
-        </div>
-        <div class="form-group">
-            <label for="pw">비밀번호</label>
-            <input type="password" id="pw" class="form-control" placeholder="비밀번호를 입력해주세요.">
-        </div>
-        <button type="button" class="btn btn-primary" id="submitBtn">로그인</button>
-        <button type="button" class="btn btn-success" id="mainBtn" onclick="location.href='/'">메인</button>
+<div class="container">
+    <h2>로그인</h2>
+    <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="text" id="email" class="form-control" placeholder="이메일을 입력해주세요.">
     </div>
+    <div class="form-group">
+        <label for="pw">비밀번호</label>
+        <input type="password" id="pw" class="form-control" placeholder="비밀번호를 입력해주세요.">
+    </div>
+    <button type="button" class="btn btn-primary" id="submitBtn">로그인</button>
+    <button type="button" class="btn btn-success" id="mainBtn" onclick="location.href='/'">메인</button>
+</div>
 </body>
 <script>
     $(document).ready(function () {
+
         $("#submitBtn").click(function () {
 
+            if($("#email").val().length == 0) {
+                alert("이메일은 필수값입니다.")
+                $("#email").focus();
+                return
+            }
+
+            if($("#pw").val().length == 0) {
+                alert("비밀번호는 필수값입니다.")
+                $("#pw").focus();
+                return
+            }
+
+            let param = {
+                email: $("#email").val(),
+                pw: $("#pw").val()
+            }
+
+            $.ajax({
+                url: "/user/login",
+                type: "POST",
+                dataType: "application/json; charset=utf-8",
+                data: JSON.stringify(param),
+                success: function (data, textStatus, jqXHR) {
+                    if(jqXHR.status === 200) {
+                        location.href = "/";
+                    }
+                },
+                error: function (jqXHR) {
+                    if(jqXHR.status === 500) {
+                        alert(jqXHR.responseText);
+                        $("#email").val("");
+                        $("#pw").val("");
+                    }
+                }
+            });
         });
     });
 </script>

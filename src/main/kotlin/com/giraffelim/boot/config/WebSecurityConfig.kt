@@ -1,6 +1,7 @@
 package com.giraffelim.boot.config
 
 import com.giraffelim.boot.security.filter.CustomAuthenticationFilter
+import com.giraffelim.boot.security.handler.CustomLoginFailureHandler
 import com.giraffelim.boot.security.handler.CustomLoginSuccessHandler
 import com.giraffelim.boot.security.provider.CustomAuthenticationProvider
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest
@@ -52,12 +53,18 @@ class WebSecurityConfig : WebSecurityConfigurerAdapter() {
         val customAuthenticationFilter = CustomAuthenticationFilter(authenticationManager())
         customAuthenticationFilter.setFilterProcessesUrl("/user/login")
         customAuthenticationFilter.setAuthenticationSuccessHandler(customLoginSuccessHandler())
+        customAuthenticationFilter.setAuthenticationFailureHandler(customLoginFailureHandler())
         return customAuthenticationFilter
     }
 
     @Bean
     fun customLoginSuccessHandler(): CustomLoginSuccessHandler {
         return CustomLoginSuccessHandler()
+    }
+
+    @Bean
+    fun customLoginFailureHandler(): CustomLoginFailureHandler {
+        return CustomLoginFailureHandler()
     }
 
     @Bean

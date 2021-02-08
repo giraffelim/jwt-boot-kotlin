@@ -16,8 +16,6 @@ class UserController(val bCryptPasswordEncoder: BCryptPasswordEncoder, val userS
     fun signUp(@RequestBody user: User): ResponseEntity<Any> {
         user.pw = bCryptPasswordEncoder.encode(user.pw)
         user.userRole = UserRole.ROLE_USER
-        //TODO UserService signUp
-        //TODO 파라미터로 넘어온 유저의 이메일을 통해, 이미 유저가 존재하는지 체크한 뒤 save
         return if (userService.findByEmail(user.email).isPresent) {
             ResponseEntity.badRequest().build()
         } else {
