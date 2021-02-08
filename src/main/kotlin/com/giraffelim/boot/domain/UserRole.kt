@@ -1,9 +1,17 @@
 package com.giraffelim.boot.domain
 
-enum class UserRole(val value: String) {
+import org.springframework.security.core.GrantedAuthority
 
-    // TODO GrantedAuthority 상속해서 구현
+enum class UserRole(val key: String, val value: String): GrantedAuthority {
 
-    ROLE_ADMIN("ROLE_USER"),
-    ROLE_USER("ROLE_ADMIN")
+    ADMIN("ROLE_ADMIN", "관리자") {
+        override fun getAuthority(): String {
+            return this.value
+        }
+    },
+    ROLE_USER("ROLE_USER", "유저") {
+        override fun getAuthority(): String {
+            return this.value
+        }
+    }
 }

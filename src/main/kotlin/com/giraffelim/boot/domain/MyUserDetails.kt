@@ -1,14 +1,13 @@
 package com.giraffelim.boot.domain
 
 import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
 class MyUserDetails(val user: User): UserDetails {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         val authorities = ArrayList<GrantedAuthority>()
-        authorities.add(SimpleGrantedAuthority(user.userRole?.value))
+        authorities.add(user.userRole!!)
         return authorities
     }
 
